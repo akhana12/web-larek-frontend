@@ -1,4 +1,4 @@
-import {IEvents} from "./events";
+import {IEvents} from "./Events";
 
 // Гарда для проверки на модель
 export const isModel = (obj: unknown): obj is Model<any> => {
@@ -18,5 +18,4 @@ export abstract class Model<T> {
 		// Состав данных можно модифицировать
 		this.events.emit(event, payload ?? {});
 	}
-
 }
