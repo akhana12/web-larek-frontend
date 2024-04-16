@@ -1,48 +1,161 @@
-// интерфейс товара
+// Тип с доступными методами запросов
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE'
+
+// Интерфейс ответа от API, содержащий список товаров
+export type ApiListResponse<Type> = {
+	total: number;
+	items: Type[];
+};
+
+export interface ILarekAPI {
+	getProductList: () => Promise<IProduct[]>;
+	getProductItem: (id: string) => Promise<IProduct>;
+	sendOrder: (
+		orderData: Partial<PlaceOrderRequest>
+	) => Promise<PlaceOrderResponse>;
+}
+
+export interface IPage {
+	catalog: HTMLElement[];
+	locked: boolean;
+}
+
+// Тип с категориями товаров
+export type ProductCategory =
+	| 'софт-скилл'
+	| 'другое'
+	| 'дополнительное'
+	| 'кнопка'
+	| 'хард-скилл';
+
+// Тип со способами оплаты
+export type PaymentType = 'online' | 'upon-receipt';
+
+export interface ApiResponse {
+	total: number;
+	items: IProduct[];
+}
+
+// Интерфейс товара
 export interface IProduct {
-	_id: string;
-	description: string;
-	image: string;
+	id: string;
+	category: ProductCategory;
 	title: string;
-	category: string;
-	price: number|null;
+	image: string;
+	price: number;
+	description?: string;
 }
 
-// интерфейс списка товаров
-export interface IProductList {
-	items: IProduct [];
-	setItems (items: IProduct[]): void; // чтобы установить после загрузки из апи
-	getProduct(id: string): IProduct; // чтобы получить при рендере списков
+// Интерфейс формы контактных данных
+export interface IContactInfo {
+	phone: string;
+	email: string;
 }
 
-// интерфейс заказа
+// Интерфейс формы способа оплаты и адреса
+export interface IOrderInfo {
+	payment: PaymentType;
+	address: string;
+}
+
+// Интерфейс заказа
 export interface IOrder {
+	orderInfo: IOrderInfo;
+	customerInfo: IContactInfo;
+}
+
+// Интерфейс состояния корзины
+export interface IBasketState {
 	items: IProduct[];
 	total: number;
-	email: string;
-	phone: string;
-	payment: string;
-	address: string;
-	addItem(item: IProduct): void;
-	removeItem(id: string): void;
-	clearItems(): void;
-	calculateTotal(): number;
 }
 
-// тип для карточки товара в списке
-export type ProductCart = Pick<IProduct, Exclude<keyof IProduct, 'description'>>;
+// Интерфейс отображения корзины
+export interface IBasketView {
+	items: HTMLElement[];
+	total: number;
+}
 
-// тип для модального окна товара
-export type ProductInfo = IProduct;
+export interface IModalData {
+	content: HTMLElement;
+}
 
-// тип для модального окна корзины
-export type CartInfo = Pick<IOrder, 'items' | 'total'>
+export interface ISuccessData {
+	total: number;
+}
 
-// тип для модального окна выбора способа оплаты и ввода адреса доставки
-export type PaymentAndAddressForm = Pick<IOrder, 'payment' | 'address'>
+export interface ICardActions {
+	onClick: (event: MouseEvent) => void;
+}
 
-// тип для модального окна ввода контактных данных
-export type ContactForm = Pick<IOrder, 'email' | 'phone'>
+export interface ICard<T> {
+	category: string;
+	title: string;
+	image?: string;
+	price: number;
+	about?: string;
+}
 
-// тип для модального окна успешного оформления заказа
-export type SuccessInfo = Pick<IOrder, 'total'>
+// Состояние приложения
+export interface IAppState {
+	catalog: IProduct[];
+	basket: IBasketState;
+	orderData: (IOrderInfo & IContactInfo) | null;
+}
+
+export type PlaceOrderRequest = {
+	payment: string;
+	email: string;
+	phone: string;
+	address: string;
+	total: number;
+	items: string[];
+}
+
+export type PlaceOrderResponse = {
+	id: string[];
+	total: number;
+}
+
+/* События */
+
+export type CatalogChangeEvent = {
+	catalog: IProduct[];
+};
+
+export enum Events {
+	UPDATE_CATALOG = 'card:catalog:update',
+	SELECT_PRODUCT = 'card:select',
+	OPEN_MODAL = 'modal:open',
+	CLOSE_MODAL = 'modal:close',
+	OPEN_BASKET = 'basket:open',
+	ADD_TO_BASKET = 'basket:product:add',
+	REMOVE_FROM_BASKET = 'basket:remove',
+	UPDATE_BASKET = 'basket:update',
+	ENTER_ORDER_INFO = 'order:info:change',
+	CHANGE_DELIVERY_ADDRESS = 'order.address:change',
+	ENTER_CONTACT_INFO = 'order:contact:change',
+	CHANGE_EMAIL = 'contacts.email:change',
+	CHANGE_PHONE_NUMBER = 'contacts.phone:change',
+	SEND_ORDER = 'order:send',
+	COMPLETE_ORDER = 'order:complete',
+	PREPARE_FOR_NEW_PURCHASES = 'order:prepare',
+	FORM_ERRORS = 'formErrors:change'
+}
+
+export interface IFormState {
+	valid: boolean;
+	errors: string[];
+}
+
+export interface IFormData extends IContactInfo, IOrderInfo {}
+export type FormErrors = Partial<Record<keyof IFormData, string>>;
+
+export enum ErrorText {
+	EMPTY_ADDRESS = 'Введите адрес доставки',
+	INVALID_ADDRESS = 'Некорректный формат адреса',
+	EMPTY_EMAIL = 'Введите e-mail',
+	INVALID_EMAIL = 'Некорректный формат e-mail',
+	EMPTY_PHONE = 'Введите телефон',
+	INVALID_PHONE = 'Неверный формат номера телефона'
+}

@@ -76,26 +76,26 @@ yarn build
 * `baseUrl: string;`: базовый URL для всех запросов к API
 * `options: RequestInit;`: дополнительные настройки запроса
 
-##### Методы:
+##### Конструктор:
 1. `constructor(baseUrl: string, options: RequestInit = {}): void`
    - Создает новый экземпляр класса, устанавливая базовый URL и настраивая параметры запроса
    - Принимает следующие параметры:
      - `baseUrl: string` - базовый URL для всех запросов
      - `options: RequestInit` - дополнительные параметры запроса, по умолчанию пустой объект
-
-2. `protected handleResponse(response: Response): Promise<object>`
+##### Методы:
+1. `protected handleResponse(response: Response): Promise<object>`
    - Обрабатывает ответ от сервера
    - Возвращает Promise-объект, который разрешается с данными ответа или отклоняется с сообщением об ошибке
    - Принимает следующий аргумент:
      - `response: Response` - объект ответа от сервера
 
-3. `get(uri: string): Promise<object>`
+2. `get(uri: string): Promise<object>`
    - Выполняет GET-запрос к указанному URI
    - Принимает следующий аргумент:
      - `uri: string` - дополнительный путь к ресурсу, на который нужно отправить запрос
    - Возвращает Promise-объект, который разрешается с данными ответа или отклоняется с сообщением об ошибке
 
-4. `post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>`
+3. `post(uri: string, data: object, method: ApiPostMethods = 'POST'): Promise<object>`
    - Отправляет POST-запрос к указанному URI
    - Принимает следующие аргументы:
      - `uri: string` - дополнительный путь к ресурсу, на который нужно отправить запрос
@@ -111,36 +111,36 @@ yarn build
 
 * `events: Map<EventName, Set<Subscriber>>` - здесь хранится информация о зарегистрированных событиях и подписчиках
 
-#### Методы:
-
+#### Конструктор:
 1. `constructor(): void`
   - Создает новый экземпляр класса, инициализируя пустой список событий
 
-2. `on<T extends object>(eventName: EventName, callback: (event: T) => void): void`
+#### Методы:
+1. `on<T extends object>(eventName: EventName, callback: (event: T) => void): void`
   - Регистрирует обработчик для указанного события
   - Принимает аргументы:
     - `eventName: EventName` - название события
     - `callback: (event: T) => void` - функция-обработчик, которая будет вызвана при возникновении события
 
-3. `off(eventName: EventName, callback: Subscriber): void`
+2. `off(eventName: EventName, callback: Subscriber): void`
   - Удаляет обработчик события.
   - Принимает аргументы:
     - `eventName: EventName` - название события
     - `callback: Subscriber` - обработчик, который нужно удалить
 
-4. `emit<T extends object>(eventName: string, data?: T): void`
+3. `emit<T extends object>(eventName: string, data?: T): void`
   - Генерирует указанное событие и вызывает все соответствующие обработчики
   - Принимает аргументы:
     - `eventName: string` - название события
     - `data?: T` - дополнительные данные, передаваемые в обработчики события
 
-5. `onAll(callback: (event: EmitterEvent) => void): void`
+4. `onAll(callback: (event: EmitterEvent) => void): void`
   - Регистрирует обработчик для всех событий
 
-6. `offAll(): void`
+5. `offAll(): void`
   - Удаляет все зарегистрированные события и их обработчики
 
-7. `trigger<T extends object>(eventName: string, context?: Partial<T>): Function`
+6. `trigger<T extends object>(eventName: string, context?: Partial<T>): Function`
   - Возвращает функцию, которая генерирует указанное событие при вызове
   - Принимает аргументы:
     - `eventName: string` - название события
@@ -155,13 +155,15 @@ yarn build
 - `data: Partial<T>` - частичные данные модели, которые могут быть переданы через конструктор при создании экземпляра класса
 - `events: IEvents` - интерфейс для работы с событиями, предоставляющий методы для эмитирования событий
 
-#### Методы:
+#### Конструктор:
 
 1. `constructor(data: Partial<T>, events: IEvents)`
   - Конструктор класса, принимающий частичные данные модели и объект для работы с событиями
   - При создании экземпляра класса данные передаются через аргумент `data`, а объект событий - через аргумент `events`
 
-2. `emitChanges(event: string, payload?: object)`
+#### Методы:
+
+1. `emitChanges(event: string, payload?: object)`
   - Метод для сообщения всем заинтересованным сторонам о том, что модель была изменена
   - Принимает строку `event`, представляющую собой название события, и опциональный `payload`, содержащий данные, связанные с событием
   - По умолчанию, если `payload` не передан, используется пустой объект `{}`
@@ -170,7 +172,7 @@ yarn build
 
 Этот абстрактный базовый класс предназначен для работы с DOM элементами в приложениях и является дженериком, принимающим тип данных описываемого компонента
 
-#### Методы:
+#### Конструктор:
 
 1. `toggleClass(element: HTMLElement, className: string, force?: boolean): void`
   - Переключает класс у указанного элемента.
@@ -179,36 +181,38 @@ yarn build
     - `className: string` - название класса, который нужно переключить
     - `force?: boolean` - опциональный параметр, определяющий, следует ли добавить класс (`true`) или удалить его (`false`). По умолчанию класс будет переключен
 
-2. `setText(element: HTMLElement, value: unknown): void`
+#### Методы:
+
+1. `setText(element: HTMLElement, value: unknown): void`
   - Устанавливает текстовое содержимое для указанного элемента
   - Принимает аргументы:
     - `element: HTMLElement` - DOM элемент, для которого устанавливается текстовое содержимое
     - `value: unknown` - значение, которое будет установлено в качестве текста элемента
 
-3. `setDisabled(element: HTMLElement, state: boolean): void`
+2. `setDisabled(element: HTMLElement, state: boolean): void`
   - Устанавливает состояние блокировки для указанного элемента
   - Принимает аргументы:
     - `element: HTMLElement` - DOM элемент, для которого нужно установить состояние блокировки
     - `state: boolean` - состояние блокировки (`true` - заблокирован, `false` - разблокирован)
 
-4. `setHidden(element: HTMLElement): void`
+3. `setHidden(element: HTMLElement): void`
   - Скрывает указанный элемент, устанавливая для него стиль "display: none"
   - Принимает аргументы:
     - `element: HTMLElement` - DOM элемент, который нужно скрыть
 
-5. `setVisible(element: HTMLElement): void`
+4. `setVisible(element: HTMLElement): void`
   - Отображает указанный элемент, удаляя стиль "display: none"
   - Принимает аргументы:
     - `element: HTMLElement` - DOM элемент, который нужно отобразить
 
-6. `setImage(element: HTMLImageElement, src: string, alt?: string): void`
+5. `setImage(element: HTMLImageElement, src: string, alt?: string): void`
   - Устанавливает изображение и альтернативный текст для указанного элемента
   - Принимает аргументы:
     - `element: HTMLImageElement` - DOM элемент типа изображения (`<img>`), для которого нужно установить изображение и альтернативный текст
     - `src: string` - путь к изображению.
     - `alt?: string` - опциональный параметр, альтернативный текст для изображения
 
-7. `render(data?: Partial<T>): HTMLElement`
+6. `render(data?: Partial<T>): HTMLElement`
   - Возвращает корневой DOM-элемент компонента
   - Принимает аргументы:
     - `data?: Partial<T>` - частичные данные компонента, которые могут быть переданы при рендеринге
@@ -273,7 +277,7 @@ yarn build
 - `price`: Цена продукта
 - `about`: Описание продукта
 
-#### Методы:
+#### Конструктор:
 
 1. `constructor(data: Partial<IProduct>, events: IEvents)`
   - Конструктор класса, принимающий частичные данные продукта и объект для работы с событиями
@@ -287,7 +291,7 @@ yarn build
 
 - `cdn: string`: Строка, представляющая базовый URL для загрузки изображений
 
-#### Методы:
+#### Конструктор:
 
 1. `constructor(cdn: string, baseUrl: string, options?: RequestInit)`
   - Конструктор класса, принимающий CDN, базовый URL и опциональные настройки запроса
@@ -295,17 +299,19 @@ yarn build
   - `baseUrl: string` - базовый URL для API
   - `options?: RequestInit` - опциональные настройки для запроса
 
-2. `getProductList(): Promise<IProduct[]>`
+#### Методы:
+
+1. `getProductList(): Promise<IProduct[]>`
   - Метод для получения списка продуктов
   - Возвращает промис, содержащий массив продуктов
 
-3. `getProductItem(id: string): Promise<IProduct>`
+2. `getProductItem(id: string): Promise<IProduct>`
   - Метод для получения информации о продукте по его идентификатору
   - Принимает аргумент:
     - `id: string` - идентификатор продукта
   - Возвращает промис, содержащий информацию о продукте
 
-4. `sendOrder(requestBody: Partial<PlaceOrderRequest>): Promise<PlaceOrderResponse>`
+3. `sendOrder(requestBody: Partial<PlaceOrderRequest>): Promise<PlaceOrderResponse>`
   - Метод для оформления заказа.
   - Принимает аргумент:
     - `requestBody: Partial<PlaceOrderRequest>` - частичные данные заказа
@@ -323,23 +329,25 @@ yarn build
 - `_wrapper: HTMLElement` - DOM элемент, обертка страницы
 - `_counter: HTMLElement` - DOM элемент, отображающий количество товаров в корзине
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLElement, events: IEvents)**
   - Конструктор класса, принимающий контейнер страницы и объект для работы с событиями
   - При создании экземпляра класса инициализируются DOM элементы галереи, корзины и обертки страницы
 
-2. **set gallery(items: HTMLElement[])**
+#### Методы:
+
+1. **set gallery(items: HTMLElement[])**
   - Устанавливает элементы галереи на странице
   - Принимает аргументы:
     - `items: HTMLElement[]` - массив DOM элементов, представляющих элементы галереи
 
-3. **set counter(value: number)**
+2. **set counter(value: number)**
   - Устанавливает количество товаров в корзине
   - Принимает аргументы:
     - `value: number` - количество товаров в корзине
 
-4. **set locked(value: boolean)**
+3. **set locked(value: boolean)**
   - Устанавливает блокировку страницы
   - Принимает аргументы:
     - `value: boolean` - значение, указывающее на блокировку (`true`) или разблокировку (`false`) страницы
@@ -358,7 +366,7 @@ yarn build
 - `_price: HTMLSpanElement` - DOM элемент, представляющий цену товара
 - `_category: HTMLSpanElement` - DOM элемент, представляющий категорию товара
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(blockName: string, container: HTMLElement, actions?: ICardActions)**
   - Конструктор класса, принимающий название блока, контейнер карточки товара и объект действий
@@ -366,49 +374,51 @@ yarn build
   - `container: HTMLElement` - контейнер карточки товара
   - `actions?: ICardActions` - объект событий карточки товара (необязательный)
 
-2. **set id(value: string)**
+#### Методы:
+
+1. **set id(value: string)**
   - Устанавливает идентификатор карточки товара
   - Принимает аргументы:
     - `value: string` - идентификатор карточки товара
 
-3. **get id(): string**
+2. **get id(): string**
   - Возвращает идентификатор карточки товара
 
-4. **set title(value: string)**
+3. **set title(value: string)**
   - Устанавливает заголовок карточки товара
   - Принимает аргументы:
     - `value: string` - заголовок карточки товара
 
-5. **get title(): string**
+4. **get title(): string**
   - Возвращает заголовок карточки товара
 
-6. **set image(value: string)**
+5. **set image(value: string)**
   - Устанавливает изображение товара
   - Принимает аргументы:
     - `value: string` - путь к изображению товара
 
-7. **set price(value: number)**
+6. **set price(value: number)**
   - Устанавливает цену товара
   - Принимает аргументы:
     - `value: number` - цена товара
 
-8. **set about(value: string | string[])**
+7. **set about(value: string | string[])**
   - Устанавливает описание товара
   - Принимает аргументы:
     - `value: string | string[]` - описание товара или массив строк
 
-9. **disableButton(): void**
+8. **disableButton(): void**
   - Отключает кнопку карточки товара
 
-10. **enableButton(): void**
+9. **enableButton(): void**
   - Включает кнопку карточки товара
 
-11. **set category(value: string)**
+10. **set category(value: string)**
   - Устанавливает категорию товара
   - Принимает аргументы:
     - `value: string` - категория товара
 
-12. **remove(): void**
+11. **remove(): void**
   - Удаляет карточку товара из DOM
 
 ### Класс Modal
@@ -427,18 +437,20 @@ yarn build
   - `container: HTMLElement` - контейнер модального окна
   - `events: IEvents` - объект для работы с событиями
 
-2. **set content(value: HTMLElement)**
+#### Методы:
+
+1. **set content(value: HTMLElement)**
   - Устанавливает контент модального окна
   - Принимает аргументы:
     - `value: HTMLElement` - DOM элемент, который будет установлен в качестве контента модального окна
 
-3. **open()**
+2. **open()**
   - Открывает модальное окно
 
-4. **close()**
+3. **close()**
   - Закрывает модальное окно
 
-5. **render(data: IModalData): HTMLElement**
+4. **render(data: IModalData): HTMLElement**
   - Рендерит модальное окно с заданными данными
   - Принимает аргументы:
     - `data: IModalData` - данные для отображения в модальном окне
@@ -456,7 +468,7 @@ yarn build
 - `_button: HTMLElement` - DOM элемент кнопки для оформления заказа
 - `_itemIndex: HTMLElement` - DOM элемент, отображающий индекс товара в корзине
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLElement, events: EventEmitter)**
   - Конструктор класса, принимающий контейнер корзины и объект для работы с событиями
@@ -464,22 +476,24 @@ yarn build
     - `container: HTMLElement` - контейнер корзины.
     - `events: EventEmitter` - объект для работы с событиями
 
-2. **set items(items: HTMLElement[])**
+#### Методы:
+
+1. **set items(items: HTMLElement[])**
   - Устанавливает список товаров в корзине
   - Принимает аргументы:
     - `items: HTMLElement[]` - массив DOM элементов, представляющих товары в корзине
 
-3. **set total(total: number)**
+2. **set total(total: number)**
   - Устанавливает общую стоимость товаров в корзине
   - Принимает аргументы:
     - `total: number` - общая стоимость товаров
 
-4. **updateBasket()**
+3. **updateBasket()**
   - Обновляет индексы элементов корзины.
   - Проходит по всем товарам в корзине и устанавливает им уникальные индексы
   - Если корзина не пуста, кнопка для оформления заказа становится активной
 
-5. **setEmpty()**
+4. **setEmpty()**
   - Устанавливает корзину в пустое состояние
   - Заменяет содержимое корзины текстом "Корзина пуста" и делает кнопку для оформления заказа неактивной
 
@@ -492,15 +506,17 @@ yarn build
 - `_total: HTMLElement` - DOM элемент, отображающий информацию о списанных синапсах
 - `_button: HTMLElement` - DOM элемент кнопки для закрытия модального окна
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLElement, events: EventEmitter)**
   - Конструктор класса, принимающий контейнер модального окна и объект для работы с событиями
   - Принимает аргументы:
     - `container: HTMLElement` - контейнер модального окна
     - `events: EventEmitter` - объект для работы с событиями
+    - 
+#### Методы:
 
-2. **set total(total: number)**
+1. **set total(total: number)**
   - Устанавливает информацию о списанных синапсах
   - Принимает аргументы:
     - `total: number` - количество списанных синапсов
@@ -514,7 +530,7 @@ yarn build
 - `_errors: HTMLElement` - DOM элемент для отображения ошибок формы
 - `_submit: HTMLButtonElement` - DOM элемент кнопки отправки формы
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLFormElement, events: IEvents)**
   - Конструктор класса, принимающий контейнер формы и объект для работы с событиями
@@ -522,23 +538,25 @@ yarn build
     - `container: HTMLFormElement` - контейнер формы
     - `events: IEvents` - объект для работы с событиями
 
-2. **onInputChange(field: keyof T, value: string)**
+#### Методы:
+
+1. **onInputChange(field: keyof T, value: string)**
   - Обработчик изменения значения в полях формы
   - Принимает аргументы:
     - `field: keyof T` - имя поля формы
     - `value: string` - значение поля формы
 
-3. **set errors(value: string)**
+2. **set errors(value: string)**
   - Устанавливает текст ошибки в форме
   - Принимает аргументы:
     - `value: string` - текст ошибки
 
-4. **set valid(value: boolean)**
+3. **set valid(value: boolean)**
   - Устанавливает состояние валидности формы
   - Принимает аргументы:
     - `value: boolean` - состояние валидности
 
-5. **render(state: Partial<T> & IFormState)**
+4. **render(state: Partial<T> & IFormState)**
   - Рендерит форму в соответствии с переданным состоянием
   - Принимает аргументы:
     - `state: Partial<T> & IFormState` - частичное состояние формы
@@ -554,7 +572,7 @@ yarn build
 - `_paymentMethod: PaymentType` - тип выбранного способа оплаты
 - `_deliveryAddress: HTMLInputElement` - DOM элемент поля ввода адреса доставки
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLFormElement, events: IEvents)**
   - Конструктор класса, принимающий контейнер формы и объект для работы с событиями
@@ -562,16 +580,18 @@ yarn build
     - `container: HTMLFormElement` - контейнер формы
     - `events: IEvents` - объект для работы с событиями
 
-2. **onPaymentMethodChange()**
+#### Методы:
+
+1. **onPaymentMethodChange()**
   - Обработчик изменения способа оплаты.
   - Изменяет состояние формы и эмитирует событие об изменении способа оплаты
 
-3. **setActive(button: HTMLButtonElement)**
+2. **setActive(button: HTMLButtonElement)**
   - Устанавливает активную кнопку выбора способа оплаты
   - Принимает аргументы:
     - `button: HTMLButtonElement` - DOM элемент кнопки
 
-4. **clearInputs()**
+3. **clearInputs()**
   - Очищает поля формы
 
 ### Класс ContactInfo
@@ -583,7 +603,7 @@ yarn build
 - `_emailInput: HTMLInputElement` - DOM элемент поля ввода электронной почты
 - `_phoneNumberInput: HTMLInputElement` - DOM элемент поля ввода номера телефона
 
-#### Методы:
+#### Конструктор:
 
 1. **constructor(container: HTMLFormElement, events: IEvents)**
   - Конструктор класса, принимающий контейнер формы и объект для работы с событиями
@@ -591,7 +611,9 @@ yarn build
     - `container: HTMLFormElement` - контейнер формы
     - `events: IEvents` - объект для работы с событиями
 
-2. **clearInputs()**
+#### Методы:
+
+1. **clearInputs()**
   - Очищает поля формы
 
 ## Типы данных и интерфейсы
@@ -677,10 +699,10 @@ export interface IOrder {
 6. **IBasketState**
 Интерфейс состояния корзины
 ```
-      export interface IBasketState {
+export interface IBasketState {
       items: IProduct[]; - - массив товаров в корзине
       total: number; - общая стоимость товаров в корзине
-      }
+}
 ```
 
 7. **IBasketView**
@@ -688,7 +710,7 @@ export interface IOrder {
 ```
 export interface IBasketView {
 	items: HTMLElement[]; - массив элементов товаров в корзине
-	total: number;общая - стоимость товаров в корзине
+	total: number; - общая стоимость товаров в корзине
 }
 ```
 
@@ -725,7 +747,7 @@ export type PlaceOrderRequest = {
 	address: string; - адрес доставки
 	total: number; - общая стоимость заказа
 	items: string[]; - массив идентификаторов товаров в заказе
-};
+}
 ```
 
 12. **PlaceOrderResponse**
@@ -766,3 +788,4 @@ export type CatalogChangeEvent = {
     - `SEND_ORDER` - отправка заказа
     - `COMPLETE_ORDER` - завершение заказа
     - `PREPARE_FOR_NEW_PURCHASES` - подготовка к новым покупкам
+  - 
