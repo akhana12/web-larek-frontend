@@ -29,15 +29,15 @@ export class Basket extends Component<IBasketView> {
 	set items(items: HTMLElement[]) {
 		if (items.length) {
 			// Проходим по всем элементам и устанавливаем им уникальные индексы
-			items.forEach((item, index) => {
-				const itemIndex = item.querySelector('.basket__item-index');
-				if (itemIndex) {
-					itemIndex.textContent = String(index + 1);
+					items.forEach((item, index) => {
+						const itemIndex = this._itemIndex; // Используем уже найденный элемент индекса
+						if (itemIndex) {
+							itemIndex.textContent = String(index + 1); // Используем setText для установки текста
+						}
+					});
+					this._list.replaceChildren(...items);
 				}
-			});
-			this._list.replaceChildren(...items);
-		}
-	}
+			}
 
 	set total(total: number) {
 		this.setText(this._total, `${total} синапсов`);
@@ -52,12 +52,12 @@ export class Basket extends Component<IBasketView> {
 		const items = Array.from(this._list.children) as HTMLElement[];
 		if (items.length > 0) {
 			items.forEach((item, index) => {
-				const itemIndex = item.querySelector('.basket__item-index');
+				const itemIndex = this._itemIndex;
 				if (itemIndex) {
-					itemIndex.textContent = String(index + 1);
+					this.setText(itemIndex, index + 1);
 				}
 			});
-			this._button.removeAttribute('disabled');
+			this.setDisabled(this._button, false);
 		} else {
 			this.setEmpty();
 		}

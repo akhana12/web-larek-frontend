@@ -39,7 +39,7 @@ export class Form<T> extends Component<IFormState> {
 	}
 
 	set valid(value: boolean) {
-		this._submit.disabled = !value;
+		this.setDisabled(this._submit, !value);
 	}
 
 	render(state: Partial<T> & IFormState) {
@@ -132,15 +132,9 @@ export class ContactForm extends Form<IContactForm> {
 	constructor(container: HTMLFormElement, events: IEvents) {
 		super(container, events);
 
-		this._emailInput = ensureElement<HTMLInputElement>(
-			'.form__input[name="email"]',
-			container
-		);
+		this._emailInput = this.container.elements.namedItem('email') as HTMLInputElement;
 
-		this._phoneNumberInput = ensureElement<HTMLInputElement>(
-			'.form__input[name="phone"]',
-			container
-		);
+		this._phoneNumberInput = this.container.elements.namedItem('phone') as HTMLInputElement;
 
 		this._phoneNumberInput.addEventListener('input', this.maskInput.bind(this));
 		this._phoneNumberInput.value = '+7';
@@ -152,7 +146,7 @@ export class ContactForm extends Form<IContactForm> {
 	}
 
 	set valid(value: boolean) {
-		this._submit.disabled = !value;
+		this.setDisabled(this._submit, !value);
 	}
 
 	private maskInput(event: Event) {
@@ -190,7 +184,6 @@ export class ContactForm extends Form<IContactForm> {
 	}
 
 	clearInputs() {
-		this._phoneNumberInput.addEventListener('input', this.maskInput.bind(this));
 		this._phoneNumberInput.value = '+7';
 		this._emailInput.value = '';
 	}

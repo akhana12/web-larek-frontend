@@ -131,6 +131,7 @@ events.on(Events.OPEN_BASKET, () => {
 			total: appData.getTotalBasketPrice(),
 		}),
 	});
+	page.locked = true;
 });
 
 // Добавление товара в корзину
@@ -278,6 +279,9 @@ events.on(Events.SEND_ORDER, () => {
 			modal.render({
 				content: successModal.render(),
 			});
+		})
+		.catch((err) => {
+			console.error(err);
 		});
 });
 

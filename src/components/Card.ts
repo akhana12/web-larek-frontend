@@ -96,8 +96,12 @@ export class Card<T> extends Component<ICard<T>> {
 	}
 
 	disableButton(): void {
-		this.setDisabled(this._button, true)
-		this.setText(this._button, 'Уже в корзине')
+		if (this._price.textContent === 'Бесценно') {
+			this.setText(this._button, 'Нельзя купить');
+		} else {
+			this.setText(this._button, 'Уже в корзине');
+		}
+		this.setDisabled(this._button, true);
 	}
 
 	enableButton(): void {
@@ -107,23 +111,19 @@ export class Card<T> extends Component<ICard<T>> {
 
 	set category(value: string) {
 		this.setText(this._category, value);
-		this.toggleClass(this._category, `${this.blockName}__category_soft`)
-		switch (value) {
-			case 'кнопка':
-				this._category.classList.add(`${this.blockName}__category_button`);
-				break;
-			case 'дополнительное':
-				this._category.classList.add(`${this.blockName}__category_additional`);
-				break;
-			case 'софт-скил':
-				this._category.classList.add(`${this.blockName}__category_soft`);
-				break;
-			case 'хард-скил':
-				this._category.classList.add(`${this.blockName}__category_hard`);
-				break;
-			case 'другое':
-				this._category.classList.add(`${this.blockName}__category_other`);
-				break;
+		this.toggleClass(this._category, `${this.blockName}__category_soft`);
+
+		const categoryClasses: Record<string, string> = {
+			'кнопка': `${this.blockName}__category_button`,
+			'дополнительное': `${this.blockName}__category_additional`,
+			'софт-скил': `${this.blockName}__category_soft`,
+			'хард-скил': `${this.blockName}__category_hard`,
+			'другое': `${this.blockName}__category_other`
+		};
+
+		const categoryClass = categoryClasses[value];
+		if (categoryClass) {
+			this.toggleClass(this._category, categoryClass);
 		}
 	}
 

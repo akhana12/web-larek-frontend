@@ -18,24 +18,37 @@ export class LarekAPI extends Api implements ILarekAPI {
 	}
 
 	getProductList(): Promise<IProduct[]> {
-		return this.get('/product').then((data: ApiListResponse<IProduct>) =>
-			data.items.map((item) => ({
-				...item,
-				image: this.cdn + item.image,
-			}))
-		);
+		return this.get('/product')
+			.then((data: ApiListResponse<IProduct>) =>
+				data.items.map((item) => ({
+					...item,
+					image: this.cdn + item.image,
+				}))
+			)
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
 	}
 
 	getProductItem(id: string): Promise<IProduct> {
-		return this.get(`/product/${id}`).then((item: IProduct) => ({
-			...item,
-			image: this.cdn + item.image,
-		}));
+		return this.get(`/product/${id}`)
+			.then((item: IProduct) => ({
+				...item,
+				image: this.cdn + item.image,
+			}))
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
 	}
 
 	sendOrder(requestBody: PlaceOrderRequest): Promise<PlaceOrderResponse> {
-		return this.post('/order', requestBody).then(
-			(order: PlaceOrderResponse) => order
-		);
+		return this.post('/order', requestBody)
+			.then((order: PlaceOrderResponse) => order)
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
 	}
 }
