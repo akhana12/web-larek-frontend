@@ -47,21 +47,21 @@ export interface IProduct {
 }
 
 // Интерфейс формы контактных данных
-export interface IContactInfo {
+export interface IContactForm {
 	phone: string;
 	email: string;
 }
 
 // Интерфейс формы способа оплаты и адреса
-export interface IOrderInfo {
+export interface IOrderForm {
 	payment: PaymentType;
 	address: string;
 }
 
 // Интерфейс заказа
 export interface IOrder {
-	orderInfo: IOrderInfo;
-	customerInfo: IContactInfo;
+	orderForm: IOrderForm;
+	contactForm: IContactForm;
 }
 
 // Интерфейс состояния корзины
@@ -100,7 +100,7 @@ export interface ICard<T> {
 export interface IAppState {
 	catalog: IProduct[];
 	basket: IBasketState;
-	orderData: (IOrderInfo & IContactInfo) | null;
+	orderData: (IOrderForm & IContactForm) | null;
 }
 
 export type PlaceOrderRequest = {
@@ -148,7 +148,7 @@ export interface IFormState {
 	errors: string[];
 }
 
-export interface IFormData extends IContactInfo, IOrderInfo {}
+export interface IFormData extends IContactForm, IOrderForm {}
 export type FormErrors = Partial<Record<keyof IFormData, string>>;
 
 export enum ErrorText {

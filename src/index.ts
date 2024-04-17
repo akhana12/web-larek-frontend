@@ -1,6 +1,6 @@
 import {
 	Events,
-	IContactInfo,
+	IContactForm,
 	IProduct,
 	ProductCategory,
 	PlaceOrderResponse,
@@ -19,9 +19,9 @@ import { Page } from './components/Page';
 import { Card } from './components/Card';
 import './scss/styles.scss';
 import { Modal } from './components/common/Modal';
-import { Basket } from './components/common/Basket';
-import { ContactInfo, OrderInfo } from './components/Form';
-import { SuccessModal } from './components/common/Success';
+import { Basket } from './components/Basket';
+import { ContactForm, OrderForm } from './components/common/Form';
+import { SuccessModal } from './components/Success';
 
 // Глобальные контейнеры
 const events = new EventEmitter();
@@ -43,8 +43,8 @@ const templates = {
 
 // Переиспользуемые части интерфейса
 const basket: Basket = new Basket(cloneTemplate(templates.basketTemplate), events);
-const orderForm: OrderInfo = new OrderInfo(cloneTemplate(templates.orderDetailsFormTemplate), events);
-const customerDataForm: ContactInfo = new ContactInfo(cloneTemplate(templates.customerDataFormTemplate), events);
+const orderForm: OrderForm = new OrderForm(cloneTemplate(templates.orderDetailsFormTemplate), events);
+const customerDataForm: ContactForm = new ContactForm(cloneTemplate(templates.customerDataFormTemplate), events);
 const successModal: SuccessModal = new SuccessModal(cloneTemplate(templates.successModalTemplate), events);
 
 
@@ -210,22 +210,22 @@ events.on(Events.FORM_ERRORS, (errors: Partial<IFormData>) => {
 // Изменение поля в форме
 events.on(
 	/^(contacts\.(phone|email)|order\.address):change/,
-	(data: { field: keyof IContactInfo; value: string }) => {
+	(data: { field: keyof IContactForm; value: string }) => {
 		if (!['email', 'phone'].includes(data.field)) {
 			// Обработчик изменения адреса или контактной информации
 			appData.setOrderData({
-				orderInfo: {
-					...appData.order.orderInfo,
+				orderForm: {
+					...appData.order.orderForm,
 					address: data.value,
 				},
 			});
 		} else {
-			const newData: Partial<IContactInfo> = {
+			const newData: Partial<IContactForm> = {
 				[data.field]: data.value,
 			};
 			appData.setOrderData({
-				customerInfo: {
-					...appData.order.customerInfo,
+				contactForm: {
+					...appData.order.contactForm,
 					...newData,
 				},
 			});
@@ -256,30 +256,29 @@ events.on(Events.CLOSE_MODAL, () => {
 // Обработчик размещения заказа
 events.on(Events.SEND_ORDER, () => {
 	appData.setOrderData({
-		customerInfo: {
-			email: appData.order.customerInfo.email,
-			phone: appData.order.customerInfo.phone,
+		contactForm: {
+			email: appData.order.contactForm.email,
+			phone: appData.order.contactForm.phone,
 		},
 	});
 
 	api
 		.sendOrder({
-			payment: appData.order.orderInfo.payment,
-			email: appData.order.customerInfo.email,
-			phone: appData.order.customerInfo.phone,
-			address: appData.order.orderInfo.address,
+			payment: appData.order.orderForm.payment,
+			email: appData.order.contactForm.email,
+			phone: appData.order.contactForm.phone,
+			address: appData.order.orderForm.address,
 			total: appData.getTotalBasketPrice(),
 			items: appData.basket.items.map((item) => item.id),
 		})
 		.then((res: PlaceOrderResponse) => {
 			successModal.total = res.total;
 			events.emit(Events.COMPLETE_ORDER);
+			modal.close();
+			modal.render({
+				content: successModal.render(),
+			});
 		});
-
-	modal.close();
-	modal.render({
-		content: successModal.render(),
-	});
 });
 
 // Обработчик завершения заказа

@@ -1,7 +1,7 @@
-import { Component } from './base/Component';
-import { ensureElement } from '../utils/utils';
-import { IEvents } from './base/Events';
-import { Events, IContactInfo, IOrderInfo, PaymentType, IFormState } from '../types';
+import { Component } from '../base/Component';
+import { ensureElement } from '../../utils/utils';
+import { IEvents } from '../base/Events';
+import { Events, IContactForm, IOrderForm, PaymentType, IFormState } from '../../types';
 
 
 
@@ -50,7 +50,7 @@ export class Form<T> extends Component<IFormState> {
 	}
 }
 
-export class OrderInfo extends Form<IOrderInfo> {
+export class OrderForm extends Form<IOrderForm> {
 	protected _onlineButton?: HTMLButtonElement;
 	protected _uponReceiptButton?: HTMLButtonElement;
 	protected _paymentMethod: PaymentType = 'online';
@@ -125,7 +125,7 @@ export class OrderInfo extends Form<IOrderInfo> {
 	}
 }
 
-export class ContactInfo extends Form<IContactInfo> {
+export class ContactForm extends Form<IContactForm> {
 	protected _emailInput: HTMLInputElement;
 	protected _phoneNumberInput: HTMLInputElement;
 

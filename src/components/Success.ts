@@ -1,7 +1,7 @@
 /*SuccessModal*/
-import { Events, ISuccessData } from '../../types';
-import { Component } from '../base/Component';
-import { EventEmitter } from '../base/Events';
+import { Events, ISuccessData } from '../types';
+import { Component } from './base/Component';
+import { EventEmitter } from './base/Events';
 
 export class SuccessModal extends Component<ISuccessData> {
 	protected _total: HTMLElement;

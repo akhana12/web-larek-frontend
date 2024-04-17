@@ -16,11 +16,11 @@ export class AppState extends Model<IAppState> {
 		total: 0,
 	};
 	order: IOrder = {
-		orderInfo: {
+		orderForm: {
 			payment: 'online',
 			address: '',
 		},
-		customerInfo: {
+		contactForm: {
 			email: '',
 			phone: '',
 		},
@@ -67,24 +67,24 @@ export class AppState extends Model<IAppState> {
 	setOrderData(data: Partial<IOrder>) {
 		this.order = {
 			...this.order,
-			orderInfo: {
-				...this.order.orderInfo,
-				...data.orderInfo,
+			orderForm: {
+				...this.order.orderForm,
+				...data.orderForm,
 			},
-			customerInfo: {
-				...this.order.customerInfo,
-				...data.customerInfo,
+			contactForm: {
+				...this.order.contactForm,
+				...data.contactForm,
 			},
 		};
 	}
 
 	clearOrderData() {
 		this.setOrderData({
-			orderInfo: {
+			orderForm: {
 				payment: 'online',
 				address: '',
 			},
-			customerInfo: {
+			contactForm: {
 				email: '',
 				phone: '',
 			},
@@ -97,10 +97,10 @@ export class AppState extends Model<IAppState> {
 		const errors: typeof this.formErrors = {};
 		const addressRegex = /^[а-яА-ЯёЁ0-9][а-яА-ЯёЁ0-9\s.,-]{8,}[а-яА-ЯёЁ0-9]$/;
 
-		if (!this.order.orderInfo.address) {
+		if (!this.order.orderForm.address) {
 			errors.address = ErrorText.EMPTY_ADDRESS;
 		} else if (
-			!addressRegex.test(this.order.orderInfo.address)
+			!addressRegex.test(this.order.orderForm.address)
 		) {
 			errors.address = ErrorText.INVALID_ADDRESS;
 		}
@@ -116,15 +116,15 @@ export class AppState extends Model<IAppState> {
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		const phoneRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
 
-		if (!this.order.customerInfo.email) {
+		if (!this.order.contactForm.email) {
 			errors.email = ErrorText.EMPTY_EMAIL;
-		} else if (!emailRegex.test(this.order.customerInfo.email)) {
+		} else if (!emailRegex.test(this.order.contactForm.email)) {
 			errors.email = ErrorText.INVALID_EMAIL;
 		}
 
-		if (!this.order.customerInfo.phone) {
+		if (!this.order.contactForm.phone) {
 			errors.phone = ErrorText.EMPTY_PHONE;
-		} else if (!phoneRegex.test(this.order.customerInfo.phone)) {
+		} else if (!phoneRegex.test(this.order.contactForm.phone)) {
 			errors.phone = ErrorText.INVALID_PHONE;
 		}
 

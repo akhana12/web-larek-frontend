@@ -70,8 +70,8 @@ export class Card<T> extends Component<ICard<T>> {
 
 	set price(value: number) {
 		if (value === 0) {
-			this._price.textContent = 'Недоступно. Товар забыт...';
-			this._price.classList.add('card__price_out-of-stock');
+			this.setText(this._price, 'Бесценно');
+			this.toggleClass(this._price, 'card__price_out-of-stock')
 
 			if (this._button) {
 				this.disableButton();
@@ -96,19 +96,18 @@ export class Card<T> extends Component<ICard<T>> {
 	}
 
 	disableButton(): void {
-		this._button.disabled = true;
-		this._button.textContent = 'Товар недоступен';
+		this.setDisabled(this._button, true)
+		this.setText(this._button, 'Уже в корзине')
 	}
 
 	enableButton(): void {
-		this._button.disabled = false;
-		this._button.textContent = 'В корзину';
+		this.setDisabled(this._button, false)
+		this.setText(this._button, 'В корзину')
 	}
 
 	set category(value: string) {
 		this.setText(this._category, value);
-		this._category.classList.remove(`${this.blockName}__category_soft`);
-
+		this.toggleClass(this._category, `${this.blockName}__category_soft`)
 		switch (value) {
 			case 'кнопка':
 				this._category.classList.add(`${this.blockName}__category_button`);
