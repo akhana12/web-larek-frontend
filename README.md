@@ -365,6 +365,7 @@ yarn build
 - `_about?: HTMLElement` - DOM элемент, представляющий описание товара (необязательный)
 - `_price: HTMLSpanElement` - DOM элемент, представляющий цену товара
 - `_category: HTMLSpanElement` - DOM элемент, представляющий категорию товара
+- `_index: HTMLSpanElement` - DOM элемент, представляющий индекс товара в корзине
 
 #### Конструктор:
 
@@ -418,7 +419,13 @@ yarn build
   - Принимает аргументы:
     - `value: string` - категория товара
 
-11. **remove(): void**
+
+11. **set index (value: number)**
+  - Устанавливает индекс товара
+  - Принимает аргументы:
+    - `value: number` - индекс товара
+
+12. **remove(): void**
   - Удаляет карточку товара из DOM
 
 ### Класс Modal
