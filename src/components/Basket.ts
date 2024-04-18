@@ -15,7 +15,6 @@ export class Basket extends Component<IBasketView> {
 		this._list = ensureElement<HTMLElement>('.basket__list', this.container);
 		this._total = this.container.querySelector('.basket__price');
 		this._button = this.container.querySelector('.button');
-		this._itemIndex = this.container.querySelector('.basket__item-index');
 
 		if (this._button) {
 			this._button.addEventListener('click', () => {
@@ -23,44 +22,20 @@ export class Basket extends Component<IBasketView> {
 			});
 		}
 		this.items = [];
-		this.setEmpty();
 	}
 
 	set items(items: HTMLElement[]) {
-		if (items.length) {
-			// Проходим по всем элементам и устанавливаем им уникальные индексы
-					items.forEach((item, index) => {
-						const itemIndex = this._itemIndex; // Используем уже найденный элемент индекса
-						if (itemIndex) {
-							itemIndex.textContent = String(index + 1); // Используем setText для установки текста
-						}
-					});
-					this._list.replaceChildren(...items);
-				}
-			}
+			if (items.length) {
+				this._list.replaceChildren(...items);
+		} else {
+			this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
+				textContent: 'Корзина пуста'
+			}));
+		}
+	}
 
 	set total(total: number) {
 		this.setText(this._total, `${total} синапсов`);
-	}
-
-	get list() {
-		return this._list;
-	}
-
-	// Метод для обновления индексов элементов корзины
-	updateBasket() {
-		const items = Array.from(this._list.children) as HTMLElement[];
-		if (items.length > 0) {
-			items.forEach((item, index) => {
-				const itemIndex = this._itemIndex;
-				if (itemIndex) {
-					this.setText(itemIndex, index + 1);
-				}
-			});
-			this.setDisabled(this._button, false);
-		} else {
-			this.setEmpty();
-		}
 	}
 
 	setEmpty() {
@@ -69,6 +44,6 @@ export class Basket extends Component<IBasketView> {
 				textContent: 'Корзина пуста',
 			})
 		);
-		this._button.setAttribute('disabled', 'true');
+		this.setDisabled(this._button, true);
 	}
 }

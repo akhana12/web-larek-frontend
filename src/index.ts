@@ -9,7 +9,7 @@ import {
 	CatalogChangeEvent
 } from './types';
 
-import { ensureElement, cloneTemplate } from './utils/utils';
+import { ensureElement, cloneTemplate, createElement } from './utils/utils';
 import { EventEmitter } from './components/base/Events';
 import { LarekAPI } from './components/LarekAPI';
 import { API_URL, CDN_URL } from './utils/constants';
@@ -109,30 +109,14 @@ events.on<IProduct>(Events.SELECT_PRODUCT, (item) => {
 
 // Открытие корзины
 events.on(Events.OPEN_BASKET, () => {
+	const basketContent = basket.render();
 	modal.render({
-		content: basket.render({
-			items: appData.basket.items.map((item) => {
-				// Создаем экземпляр класса Card для каждого элемента корзины
-				const cardItem = new Card<IBasketView>(
-					'card',
-					cloneTemplate(templates.cardBasketTemplate),
-					{
-						onClick: () => {
-							cardItem.remove();
-							events.emit(Events.REMOVE_FROM_BASKET, item);
-						},
-					}
-				);
-				return cardItem.render({
-					title: item.title,
-					price: item.price,
-				});
-			}),
-			total: appData.getTotalBasketPrice(),
-		}),
+		content: basketContent
 	});
 	page.locked = true;
 });
+
+
 
 // Добавление товара в корзину
 events.on(Events.ADD_TO_BASKET, (item: IProduct) => {
@@ -149,17 +133,38 @@ events.on(Events.REMOVE_FROM_BASKET, (productToRemove: IProduct) => {
 	}
 });
 
-// Изменение корзины
 events.on(Events.UPDATE_BASKET, () => {
-	basket.updateBasket();
-	basket.total = appData.getTotalBasketPrice();
 	page.counter = appData.getTotalItemsInBasket();
+	const basketItems = appData.basket.items.map((item, index) => {
+		// Создаем экземпляр класса Card для каждого элемента корзины
+		const cardItem = new Card<IBasketView>(
+			'card',
+			cloneTemplate(templates.cardBasketTemplate),
+			{
+				onClick: () => {
+					cardItem.remove();
+					events.emit(Events.REMOVE_FROM_BASKET, item);
+				},
+			}
+		);
+		cardItem.index = index + 1;
+		return cardItem.render({
+			title: item.title,
+			price: item.price,
+			index: index + 1,
+		});
+	});
+	basket.render({ // Перерендериваем корзину с новыми товарами
+		items: basketItems,
+		total: appData.getTotalBasketPrice(),
+	});
 });
+
+
 
 // Вввод адреса и способа оплаты заказа
 events.on(Events.ENTER_ORDER_INFO, () => {
 	modal.close();
-	console.log(orderForm.render)
 	modal.render({
 		content: orderForm.render({
 			valid: appData.validateAddress(),

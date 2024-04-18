@@ -9,6 +9,7 @@ export class Card<T> extends Component<ICard<T>> {
 	protected _about?: HTMLElement;
 	protected _price: HTMLSpanElement;
 	protected _category: HTMLSpanElement;
+	protected _index?: HTMLElement | null;
 
 	constructor(
 		protected blockName: string,
@@ -23,6 +24,7 @@ export class Card<T> extends Component<ICard<T>> {
 		if (container.querySelector(imageSelector)) {
 			this._image = ensureElement<HTMLImageElement>(imageSelector, container);
 		}
+		this._index = container.querySelector(`.basket__item-index`);
 
 		const aboutSelector = `.${blockName}__text`;
 		if (container.querySelector(aboutSelector)) {
@@ -125,6 +127,10 @@ export class Card<T> extends Component<ICard<T>> {
 		if (categoryClass) {
 			this.toggleClass(this._category, categoryClass);
 		}
+	}
+
+	set index(value: number) {
+		this.setText(this._index, String(value));
 	}
 
 	remove(): void {

@@ -112,11 +112,11 @@ export class OrderForm extends Form<IOrderForm> {
 	// Метод для установки активной кнопки способа оплаты
 	protected setActive(button: HTMLButtonElement) {
 		if (button === this._onlineButton) {
-			this._onlineButton.classList.add(`button_alt-active`);
-			this._uponReceiptButton.classList.remove(`button_alt-active`);
+			this.toggleClass(this._onlineButton, 'button_alt-active', true)
+			this.toggleClass(this._uponReceiptButton, 'button_alt-active', false)
 		} else {
-			this._onlineButton.classList.remove(`button_alt-active`);
-			this._uponReceiptButton.classList.add(`button_alt-active`);
+			this.toggleClass(this._onlineButton, 'button_alt-active', false)
+			this.toggleClass(this._uponReceiptButton, 'button_alt-active', true)
 		}
 	}
 

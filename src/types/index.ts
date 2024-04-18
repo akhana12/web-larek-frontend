@@ -94,6 +94,7 @@ export interface ICard<T> {
 	image?: string;
 	price: number;
 	about?: string;
+	index?: number;
 }
 
 // Состояние приложения

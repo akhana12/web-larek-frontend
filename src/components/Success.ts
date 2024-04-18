@@ -21,6 +21,6 @@ export class SuccessModal extends Component<ISuccessData> {
 	}
 
 	set total(total: number) {
-		this._total.textContent = `Списано ${total} синапсов`;
+		this.setText(this._total, `Списано ${total} синапсов`);
 	}
 }
