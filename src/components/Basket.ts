@@ -7,7 +7,6 @@ export class Basket extends Component<IBasketView> {
 	protected _list: HTMLElement;
 	protected _total: HTMLElement;
 	protected _button: HTMLElement;
-	protected _itemIndex: HTMLElement;
 
 	constructor(container: HTMLElement, protected events: EventEmitter) {
 		super(container);
@@ -22,15 +21,15 @@ export class Basket extends Component<IBasketView> {
 			});
 		}
 		this.items = [];
+		this.setEmpty();
 	}
 
 	set items(items: HTMLElement[]) {
 			if (items.length) {
 				this._list.replaceChildren(...items);
+				this.setDisabled(this._button, false);
 		} else {
-			this._list.replaceChildren(createElement<HTMLParagraphElement>('p', {
-				textContent: 'Корзина пуста'
-			}));
+				this.setEmpty();
 		}
 	}
 

@@ -9,7 +9,7 @@ import {
 	CatalogChangeEvent
 } from './types';
 
-import { ensureElement, cloneTemplate, createElement } from './utils/utils';
+import { ensureElement, cloneTemplate } from './utils/utils';
 import { EventEmitter } from './components/base/Events';
 import { LarekAPI } from './components/LarekAPI';
 import { API_URL, CDN_URL } from './utils/constants';
